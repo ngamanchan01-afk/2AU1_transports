@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Go & Live: English Practice</title>
+    <style>
+        /* Basic Styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7f9;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #007bff;
+            text-align: center;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+
+        /* Tab Navigation */
+        .tabs {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #ccc;
+        }
+        .tab-button {
+            padding: 12px 20px;
+            cursor: pointer;
+            background: #e9ecef;
+            border: none;
+            border-radius: 8px 8px 0 0;
+            transition: background 0.3s, color 0.3s;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .tab-button.active {
+            background: #007bff;
+            color: white;
+            border-bottom: 3px solid #007bff;
+        }
+        .tab-content {
+            display: none;
+            padding: 20px 0;
+            border-top: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Exercise Styling */
+        .exercise {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fafafa;
+        }
+        .question-box {
+            font-size: 18px;
+            margin: 15px 0;
+            padding: 10px;
+            border: 1px dashed #aaa;
+            border-radius: 5px;
+            min-height: 40px;
+        }
+        .word-bank {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+            padding: 10px;
+            background: #e9f0f6;
+            border-radius: 5px;
+            min-height: 60px; /* Ensure visibility */
+        }
+        .word {
+            padding: 8px 12px;
+            background: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: grab;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+        .word:hover {
+            background: #0056b3;
+        }
+        .drop-area {
+            border: 2px dashed #007bff;
+            padding: 5px;
+            min-width: 80px;
+            height: 30px;
+            display: inline-block;
+            text-align: center;
+            line-height: 30px;
+            margin: 0 5px;
+            background-color: #fff;
+        }
+        .result-message {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .correct {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        /* Function 4 (Capitalization) specific styling */
+        .capitalization-sentence {
+            font-size: 20px;
+            margin: 20px 0;
+            padding: 10px;
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 5px;
+        }
+        .capital-word {
+            display: inline-block;
+            margin-right: 5px;
+            padding: 5px 0;
+        }
+        .char {
+            cursor: pointer;
+            font-weight: normal;
+            transition: all 0.1s;
+        }
+        .char:hover {
+            background: #ffe08a;
+        }
+        .char.capitalized {
+            font-weight: bold;
+            color: darkred;
+            transform: scale(1.1);
+        }
+        
+        /* Word Bank Reference */
+        .word-reference h3 {
+            color: #28a745;
+            margin-top: 20px;
+        }
+        .word-list {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .category {
+            flex: 1;
+            min-width: 250px;
+            padding: 15px;
+            background: #e2f0d9;
+            border-radius: 8px;
+        }
+        .category ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .category li {
+            padding: 5px 0;
+            border-bottom: 1px dotted #ccc;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>English Practice: Go, Live, & Transport</h1>
+
+    <div class="tabs">
+        <button class="tab-button active" onclick="openTab(event, 'reorganize')">1. Sentence Order</button>
+        <button class="tab-button" onclick="openTab(event, 'selection')">2. Fill-in-the-Blank</button>
+        <button class="tab-button" onclick="openTab(event, 'capitalization')">3. Capitalization</button>
+        <button class="tab-button" onclick="openTab(event, 'wordbank')">4. Word Bank</button>
+    </div>
+
+    <div id="reorganize" class="tab-content active">
+        <h2>Function 1: Reorganize the Sentence 🔄</h2>
+        <p>Drag the words to the box in the correct order to form a question or sentence.</p>
+        
+        <div class="exercise" id="exercise-reorganize-1">
+            <p><strong>1. Question (How):</strong></p>
+            <div class="question-box" id="drop-reorganize-1"></div>
+            <div class="word-bank" id="bank-reorganize-1">
+                <span class="word" draggable="true" data-word="she">she</span>
+                <span class="word" draggable="true" data-word="go">go</span>
+                <span class="word" draggable="true" data-word="does">does</span>
+                <span class="word" draggable="true" data-word="school">school</span>
+                <span class="word" draggable="true" data-word="How">How</span>
+                <span class="word" draggable="true" data-word="to">to</span>
+                <span class="word" draggable="true" data-word="?">?</span>
+            </div>
+            <button onclick="checkReorganize('reorganize-1', 'How does she go to school ?')">Check Answer</button>
+            <div class="result-message" id="result-reorganize-1"></div>
+        </div>
+        
+        <div class="exercise" id="exercise-reorganize-2">
+            <p><strong>2. Question (Where):</strong></p>
+            <div class="question-box" id="drop-reorganize-2"></div>
+            <div class="word-bank" id="bank-reorganize-2">
+                <span class="word" draggable="true" data-word="Where">Where</span>
+                <span class="word" draggable="true" data-word="live">live</span>
+                <span class="word" draggable="true" data-word="you">you</span>
+                <span class="word" draggable="true" data-word="do">do</span>
+                <span class="word" draggable="true" data-word="?">?</span>
+            </div>
+            <button onclick="checkReorganize('reorganize-2', 'Where do you live ?')">Check Answer</button>
+            <div class="result-message" id="result-reorganize-2"></div>
+        </div>
+
+        <div class="exercise" id="exercise-reorganize-3">
+            <p><strong>3. Answer (Transport):</strong></p>
+            <div class="question-box" id="drop-reorganize-3"></div>
+            <div class="word-bank" id="bank-reorganize-3">
+                <span class="word" draggable="true" data-word="school">school</span>
+                <span class="word" draggable="true" data-word="I">I</span>
+                <span class="word" draggable="true" data-word="by">by</span>
+                <span class="word" draggable="true" data-word="go">go</span>
+                <span class="word" draggable="true" data-word="bus">bus</span>
+                <span class="word" draggable="true" data-word="to">to</span>
+                <span class="word" draggable="true" data-word=".">.</span>
+            </div>
+            <button onclick="checkReorganize('reorganize-3', 'I go to school by bus .')">Check Answer</button>
+            <div class="result-message" id="result-reorganize-3"></div>
+        </div>
+
+        <div class="exercise" id="exercise-reorganize-4">
+            <p><strong>4. Answer (Location):</strong></p>
+            <div class="question-box" id="drop-reorganize-4"></div>
+            <div class="word-bank" id="bank-reorganize-4">
+                <span class="word" draggable="true" data-word="Kowloon">Kowloon</span>
+                <span class="word" draggable="true" data-word="She">She</span>
+                <span class="word" draggable="true" data-word="lives">lives</span>
+                <span class="word" draggable="true" data-word="in">in</span>
+                <span class="word" draggable="true" data-word=".">.</span>
+            </div>
+            <button onclick="checkReorganize('reorganize-4', 'She lives in Kowloon .')">Check Answer</button>
+            <div class="result-message" id="result-reorganize-4"></div>
+        </div>
+    </div>
+
+    <div id="selection" class="tab-content">
+        <h2>Function 2: Choose the Correct Word ✍️</h2>
+        <p>Select the correct word form or preposition for each sentence.</p>
+
+        <div class="exercise">
+            <p><strong>1. Auxiliary Verb (do/does):</strong></p>
+            <p>Where 
+                <span class="drop-area" data-answer="do" onclick="selectWord(this, 'do', 'selection-1')">...</span> 
+                you go to school?</p>
+            <p>How 
+                <span class="drop-area" data-answer="does" onclick="selectWord(this, 'does', 'selection-2')">...</span> 
+                he live?</p>
+            <div class="word-bank">
+                <span class="word" onclick="fillDropArea('do', 'selection-1', 'selection-2')">do</span>
+                <span class="word" onclick="fillDropArea('does', 'selection-1', 'selection-2')">does</span>
+            </div>
+            <div class="result-message" id="result-selection-1"></div>
+            <div class="result-message" id="result-selection-2"></div>
+        </div>
+
+        <div class="exercise">
+            <p><strong>2. Preposition (in/on/by):</strong></p>
+            <p>I go to work 
+                <span class="drop-area" data-answer="by" onclick="selectWord(this, 'by', 'selection-3')">...</span> 
+                ferry.</p>
+            <p>She lives 
+                <span class="drop-area" data-answer="on" onclick="selectWord(this, 'on', 'selection-4')">...</span> 
+                Hong Kong Island.</p>
+            <p>They go to the park 
+                <span class="drop-area" data-answer="on" onclick="selectWord(this, 'on', 'selection-5')">...</span> 
+                foot.</p>
+            <p>He lives 
+                <span class="drop-area" data-answer="in" onclick="selectWord(this, 'in', 'selection-10')">...</span> 
+                Kwun Tong.</p>
+            <div class="word-bank">
+                <span class="word" onclick="fillDropArea('in', 'selection-3', 'selection-4', 'selection-5')">in</span>
+                <span class="word" onclick="fillDropArea('on', 'selection-3', 'selection-4', 'selection-5')">on</span>
+                <span class="word" onclick="fillDropArea('by', 'selection-3', 'selection-4', 'selection-5')">by</span>
+            </div>
+            <div class="result-message" id="result-selection-3"></div>
+            <div class="result-message" id="result-selection-4"></div>
+            <div class="result-message" id="result-selection-5"></div>
+            <div class="result-message" id="result-selection-10"></div>
+        </div>
+        
+        <div class="exercise">
+            <p><strong>3. Main Verb (go/goes):</strong></p>
+            <p>My sister 
+                <span class="drop-area" data-answer="goes" onclick="selectWord(this, 'goes', 'selection-6')">...</span> 
+                to school by tram.</p>
+            <p>We always 
+                <span class="drop-area" data-answer="go" onclick="selectWord(this, 'go', 'selection-7')">...</span> 
+                to the market on foot.</p>
+            <div class="word-bank">
+                <span class="word" onclick="fillDropArea('go', 'selection-6', 'selection-7')">go</span>
+                <span class="word" onclick="fillDropArea('goes', 'selection-6', 'selection-7')">goes</span>
+            </div>
+            <div class="result-message" id="result-selection-6"></div>
+            <div class="result-message" id="result-selection-7"></div>
+        </div>
+        
+        <div class="exercise">
+            <p><strong>4. Main Verb (live/lives):</strong></p>
+            <p>They 
+                <span class="drop-area" data-answer="live" onclick="selectWord(this, 'live', 'selection-8')">...</span> 
+                in a large apartment in Kowloon.</p>
+            <p>My dad 
+                <span class="drop-area" data-answer="lives" onclick="selectWord(this, 'lives', 'selection-9')">...</span> 
+                on Cheung Chau Island.</p>
+            <div class="word-bank">
+                <span class="word" onclick="fillDropArea('live', 'selection-8', 'selection-9')">live</span>
+                <span class="word" onclick="fillDropArea('lives', 'selection-8', 'selection-9')">lives</span>
+            </div>
+            <div class="result-message" id="result-selection-8"></div>
+            <div class="result-message" id="result-selection-9"></div>
+        </div>
+    </div>
+
+    <div id="capitalization" class="tab-content">
+        <h2>Function 3: Capitalization Practice 🅰️</h2>
+        <p>Click on the first letter of a sentence or a proper noun to capitalize it. Proper nouns include names of places (e.g., Kowloon, Island).</p>
+
+        <div class="exercise">
+            <div id="cap-ex-1" class="capitalization-sentence" data-target="How do you go to school ?">how do you go to school ?</div>
+            <div id="cap-ex-2" class="capitalization-sentence" data-target="I live in Kowloon .">i live in kowloon .</div>
+            <div id="cap-ex-3" class="capitalization-sentence" data-target="She lives on Lantau Island .">she lives on lantau island .</div>
+            <button onclick="checkCapitalization('cap-ex-1', 'How do you go to school ?')">Check Ex 1</button>
+            <button onclick="checkCapitalization('cap-ex-2', 'I live in Kowloon .')">Check Ex 2</button>
+            <button onclick="checkCapitalization('cap-ex-3', 'She lives on Lantau Island .')">Check Ex 3</button>
+        </div>
+    </div>
+    
+    <div id="wordbank" class="tab-content">
+        <h2>Function 4: Vocabulary Word Bank 📚</h2>
+        <p>Use this reference list to help you with the exercises.</p>
+
+        <div class="word-reference">
+            <div class="word-list">
+                <div class="category">
+                    <h3>Transport (Preposition: by)</h3>
+                    <ul>
+                        <li>by ferry</li>
+                        <li>by bus</li>
+                        <li>by tram</li>
+                        <li>by train</li>
+                        <li>by minibus</li>
+                        <li>by school bus</li>
+                        <li>*Exception: on foot</li>
+                    </ul>
+                </div>
+                <div class="category">
+                    <h3>Places (Preposition: in)</h3>
+                    <ul>
+                        <li>in Kowloon</li>
+                        <li>in Choi Hung</li>
+                        <li>in Tsim Sha Tsui</li>
+                        <li>in a flat</li>
+                    </ul>
+                </div>
+                <div class="category">
+                    <h3>Islands (Preposition: on)</h3>
+                    <ul>
+                        <li>on Lantau Island</li>
+                        <li>on Hong Kong Island</li>
+                        <li>on Cheung Chau</li>
+                        <li>on a boat</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- Setup for Function 1 (Reorganize) ---
+        const exercises = [
+            { id: 'reorganize-1', bankId: 'bank-reorganize-1', dropId: 'drop-reorganize-1' },
+            { id: 'reorganize-2', bankId: 'bank-reorganize-2', dropId: 'drop-reorganize-2' },
+            { id: 'reorganize-3', bankId: 'bank-reorganize-3', dropId: 'drop-reorganize-3' },
+            { id: 'reorganize-4', bankId: 'bank-reorganize-4', dropId: 'drop-reorganize-4' }
+        ];
+
+        exercises.forEach(ex => {
+            const dropArea = document.getElementById(ex.dropId);
+            const wordBank = document.getElementById(ex.bankId);
+
+            // Drag and Drop Listeners
+            dropArea.addEventListener('dragover', e => e.preventDefault());
+            dropArea.addEventListener('drop', e => {
+                e.preventDefault();
+                const data = e.dataTransfer.getData('text/plain');
+                const draggedElement = document.getElementById(data);
+                if (draggedElement) dropArea.appendChild(draggedElement);
+            });
+            wordBank.addEventListener('dragover', e => e.preventDefault());
+            wordBank.addEventListener('drop', e => {
+                e.preventDefault();
+                const data = e.dataTransfer.getData('text/plain');
+                const draggedElement = document.getElementById(data);
+                if (draggedElement) wordBank.appendChild(draggedElement);
+            });
+
+            // Set up word IDs and dragstart
+            Array.from(wordBank.children).forEach((word, index) => {
+                word.id = `word-${ex.id}-${index}`;
+                word.addEventListener('dragstart', e => {
+                    e.dataTransfer.setData('text/plain', word.id);
+                });
+            });
+        });
+
+        // --- Setup for Function 4 (Capitalization) ---
+        ['cap-ex-1', 'cap-ex-2', 'cap-ex-3'].forEach(id => setupCapitalizationExercise(id));
+    });
+
+    // --- Tab Functionality ---
+    function openTab(evt, tabName) {
+        let i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tab-content");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tab-button");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+
+    // --- Function 1 Logic (Reorganize) ---
+    function checkReorganize(exerciseId, correctAnswer) {
+        const dropArea = document.getElementById(`drop-${exerciseId}`);
+        const resultDiv = document.getElementById(`result-${exerciseId}`);
+        
+        let userSentence = Array.from(dropArea.children)
+                            .map(word => word.getAttribute('data-word'))
+                            .join(' ');
+
+        if (userSentence.trim() === correctAnswer.trim()) {
+            resultDiv.className = 'result-message correct';
+            resultDiv.innerHTML = '✅ Correct! Well done!';
+        } else {
+            resultDiv.className = 'result-message incorrect';
+            resultDiv.innerHTML = `❌ Incorrect. Try again! <br> Your answer: <strong>${userSentence}</strong>`;
+        }
+    }
+
+    // --- Function 2 Logic (Fill-in-the-Blank) ---
+    let selectedWord = null;
+    function fillDropArea(word, ...resultIds) {
+        selectedWord = word;
+        const bankWords = document.querySelectorAll('.word-bank .word');
+        bankWords.forEach(w => w.style.backgroundColor = '#007bff');
+        event.target.style.backgroundColor = 'darkgreen'; // Highlight the selected word
+    }
+
+    function selectWord(element, correct, resultId) {
+        const resultDiv = document.getElementById(`result-${resultId}`);
+        
+        if (selectedWord === null) {
+            resultDiv.className = 'result-message incorrect';
+            resultDiv.innerHTML = '❌ Please select a word from the bank first.';
+            return;
+        }
+
+        element.textContent = selectedWord;
+
+        if (selectedWord === correct) {
+            resultDiv.className = 'result-message correct';
+            resultDiv.innerHTML = `✅ Correct! (${correct})`;
+            element.style.backgroundColor = '#d4edda';
+            element.style.color = '#155724';
+        } else {
+            resultDiv.className = 'result-message incorrect';
+            resultDiv.innerHTML = `❌ Incorrect. (${selectedWord} is wrong)`;
+            element.style.backgroundColor = '#f8d7da';
+            element.style.color = '#721c24';
+        }
+        selectedWord = null; // Reset selection after use
+    }
+    
+    // --- Function 4 Logic (Capitalization) ---
+    function setupCapitalizationExercise(id) {
+        const container = document.getElementById(id);
+        const text = container.getAttribute('data-target') || container.textContent;
+        container.innerHTML = '';
+
+        const words = text.split(' ');
+        words.forEach((wordText, wordIdx) => {
+            const wordSpan = document.createElement('span');
+            wordSpan.className = 'capital-word';
+            for (let i = 0; i < wordText.length; i++) {
+                const charSpan = document.createElement('span');
+                charSpan.className = 'char';
+                // Always start with lowercase for first letter if it's a letter
+                if (i === 0 && /^[A-Z]$/.test(wordText[i])) {
+                    charSpan.textContent = wordText[i].toLowerCase();
+                } else {
+                    charSpan.textContent = wordText[i];
+                }
+                if (i === 0) {
+                    charSpan.onclick = () => {
+                        if (/^[a-zA-Z]$/.test(charSpan.textContent)) {
+                            if (charSpan.textContent === charSpan.textContent.toUpperCase()) {
+                                charSpan.textContent = charSpan.textContent.toLowerCase();
+                                charSpan.classList.remove('capitalized');
+                            } else {
+                                charSpan.textContent = charSpan.textContent.toUpperCase();
+                                charSpan.classList.add('capitalized');
+                            }
+                        }
+                    };
+                }
+                wordSpan.appendChild(charSpan);
+            }
+            container.appendChild(wordSpan);
+        });
+    }
+
+    function checkCapitalization(id, correctAnswer) {
+        const container = document.getElementById(id);
+        const resultDivId = `result-${id}`;
+        let resultDiv = document.getElementById(resultDivId);
+        if (!resultDiv) {
+            resultDiv = document.createElement('div');
+            resultDiv.id = resultDivId;
+            container.parentNode.appendChild(resultDiv);
+        }
+        // Join the text content of each word span, separated by a space
+        let userText = Array.from(container.getElementsByClassName('capital-word'))
+            .map(wordSpan => Array.from(wordSpan.getElementsByClassName('char')).map(char => char.textContent).join(''))
+            .join(' ')
+            .replace(/\s+/g, ' ').trim();
+        if (userText === correctAnswer) {
+            resultDiv.className = 'result-message correct';
+            resultDiv.innerHTML = '✅ Correct! All proper nouns and sentence starts are capitalized!';
+        } else {
+            resultDiv.className = 'result-message incorrect';
+            resultDiv.innerHTML = `❌ Incorrect. The correct answer is: <strong>${correctAnswer}</strong>`;
+        }
+    }
+</script>
+
+</body>
+</html>
